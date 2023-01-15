@@ -3,7 +3,7 @@
 #include <clocale>
 using namespace std;
 int enemyToAttack = 0;
-int attack;
+int attack = 0;
 int enemyHP;
 string enemyName;
 bool enemyIsAlive = true;
@@ -25,205 +25,133 @@ void names() {
     cout << "El nombre que has escogido es " << heroName << ".\n";
     cout << "Como se llama el primer enemigo?\n";
     cin >> enemyName;
-    cout << "El enemigo " << enemyName << " ha aparecido!\n";
     cout << "Como se llama el segundo enemigo?\n";
     cin >> enemy2Name;
+    enemy2HP = 100 + (rand() % 200);
+    enemyHP = 100 + (rand() % 200);
+    cout << "El enemigo " << enemyName << " ha aparecido!\n";
     cout << "El enemigo " << enemy2Name << " ha aparecido!\n";
 }
-void attacksRemain() {
+int whoAttack() {
     if (swordInTheChest_powerPoints == 0 && headbuttInStomach_powerPoints == 0 && rightHandCrochet_powerPoints == 0) {
         cout << "Te has quedado sin ataques...\n";
-        cout << heroName << " se ha retirado\n";
+        cout << heroName << " se ha retirado por falta de ataques.\n";
         exit(0);
     }
+    do {
+        cout << "A que enemigo quieres atacar [1] " << enemyName << " (" << enemyHP << "hp) o [2] " << enemy2Name << " (" << enemy2HP << "hp)?\n";
+        cin >> enemyToAttack;
+    } while (enemyToAttack != 1 && enemyToAttack != 2);
+    return enemyToAttack;
 }
-int whoAttack() {
-    cout << "A que enemigo quieres atacar [1] " << enemyName << " (" << enemyHP << "hp) o [2] " << enemy2Name << " (" << enemy2HP << "hp)?\n";
-    cin >> enemyToAttack;
-    if (enemyToAttack == 1 or enemyToAttack == 2) {
-        return enemyToAttack;
+void toAttackEnemies(int& hp, string& enName) {
+    while (attack != 1 && attack != 2 && attack != 3){
+        cout << "Que ataque quieres usar? ";
+        if (swordInTheChest_powerPoints > 0) {
+            cout << "[1] swordInTheChest ";
+        }
+        if (headbuttInStomach_powerPoints > 0) {
+            cout << "[2] headbuttInStomach ";
+        }
+        if (rightHandCrochet_powerPoints > 0) {
+            cout << "[3] right_handCrochet";
+        }
+        cout << ":\n";
+        cin >> attack;
     }
-    else {
-        return whoAttack();
-    }
-}
-void whichAttackUse() {
-    cout << "Que ataque quieres usar? ";
-    if (swordInTheChest_powerPoints > 0) {
-        cout << "[1] swordInTheChest ";
-    }
-    if (headbuttInStomach_powerPoints > 0) {
-        cout << "[2] headbuttInStomach ";
-    }
-    if (rightHandCrochet_powerPoints > 0) {
-        cout << "[3] right_handCrochet";
-    }
-    cout << ":\n";
-}
-int toAttackEnemy() {
     if (attack == 1 && swordInTheChest_powerPoints > 0) {
-        cout << "A " << enemyName << " le haces " << swordInTheChest << " puntos de danyo.\n";
+        cout << "A " << enName << " le haces " << swordInTheChest << " puntos de danyo.\n";
         swordInTheChest_powerPoints--;
-        return enemyHP - swordInTheChest;
-    }
-    else if (attack == 2 && headbuttInStomach_powerPoints > 0) {
-        cout << "A " << enemyName << " le haces " << headbuttInStomach << " puntos de danyo.\n";
+        hp = hp - swordInTheChest;
+    }else if (attack == 2 && headbuttInStomach_powerPoints > 0) {
+        cout << "A " << enName << " le haces " << headbuttInStomach << " puntos de danyo.\n";
         headbuttInStomach_powerPoints--;
-        return enemyHP - headbuttInStomach;
-    }
-    else if (attack == 3 && rightHandCrochet_powerPoints > 0) {
-        cout << "A " << enemyName << " le haces " << rightHandCrochet << " puntos de danyo.\n";
+        hp = hp - headbuttInStomach;
+    }else if (attack == 3 && rightHandCrochet_powerPoints > 0) {
+        cout << "A " << enName << " le haces " << rightHandCrochet << " puntos de danyo.\n";
         rightHandCrochet_powerPoints--;
-        return enemyHP - rightHandCrochet;
+        hp = hp - rightHandCrochet;
+     }
+    attack = 0;
+}
+void attackEnemies(int& hHP, string& enName) {
+    if (heroIsAlive)    {
+        int enDmg = (rand() % 50);
+        cout << enName << " te ataca quitandote " << enDmg << " puntos de vida.\n";
+        hHP = hHP - enDmg;
     }
 }
-int toAttackEnemy2() {
-    if (attack == 1 && swordInTheChest_powerPoints > 0) {
-        cout << "A " << enemy2Name << " le haces " << swordInTheChest << " puntos de danyo.\n";
-        swordInTheChest_powerPoints--;
-        return enemy2HP - swordInTheChest;
-    }
-    else if (attack == 2 && headbuttInStomach_powerPoints > 0) {
-        cout << "A " << enemy2Name << " le haces " << headbuttInStomach << " puntos de danyo.\n";
-        headbuttInStomach_powerPoints--;
-        return enemy2HP - headbuttInStomach;
-    }
-    else if (attack == 3 && rightHandCrochet_powerPoints > 0) {
-        cout << "A " << enemy2Name << " le haces " << rightHandCrochet << " puntos de danyo.\n";
-        rightHandCrochet_powerPoints--;
-        return enemy2HP - rightHandCrochet;
-    }
-}
-int attackEnemy() {
-    int enemyDmg;
-    enemyDmg = (rand() % 50);
-    cout << enemyName << " te ataca quitandote " << enemyDmg << " puntos de vida.\n";
-    return heroHP - enemyDmg;
-}
-int attackEnemy2() {
-    int enemy2Dmg;
-    enemy2Dmg = (rand() % 50);
-    cout << enemy2Name << " te ataca quitandote " << enemy2Dmg << " puntos de vida.\n";
-    return heroHP - enemy2Dmg;
-}
-bool isHeroAlive() {
-    if (heroHP <= 0) {
-        cout << "Has Muerto.\n";
-        return false;
+void isAlive(int& hp, string& name, bool& live) {
+    if (hp <= 0) {
+        cout << name << " a muerto.\n";
+        live = false;
     }
     else {
-        cout << "Te quedan " << heroHP << " puntos de vida.\n";
-        return true;
-    }
-}
-bool isEnemyAlive() {
-    if (enemyHP <= 0) {
-        cout << enemyName << " a muerto.\n";
-        return false;
-    }
-    else {
-        cout << "A " << enemyName << " le quedan " << enemyHP << " puntos de vida.\n";
-        return true;
-    }
-}
-bool isEnemy2Alive() {
-    if (enemy2HP <= 0) {
-        cout << enemy2Name << " ha muerto.\n";
-        return false;
-    }
-    else {
-        cout << "A " << enemy2Name << " le quedan " << enemy2HP << " puntos de vida.\n";
-        return true;
+        cout << "A " << name << " le quedan " << hp << " puntos de vida.\n";
+        live = true;
     }
 }
 void win() {
-    if (!enemyIsAlive && !enemy2IsAlive) {
-        cout << "Has ganado campeon.\n";
+    cout << "Has ganado campeon.\n";
+    exit(0);
+}
+void gameOver() {
+    if (!heroIsAlive) {
+        cout << "El heroe " << heroName << " ha muerto...\n";
         exit(0);
     }
+}
+void oneEnemy(int& hHp, int& eHp,string& hName, string& eName,bool& hLive, bool& eLive) {
+    attackEnemies(hHp, eName);
+    isAlive(hHp, hName, hLive);
+    if (heroIsAlive) {
+        toAttackEnemies(eHp, eName);
+        isAlive(eHp, eName, eLive);
+    }
+    if (!enemyIsAlive && !enemy2IsAlive) {
+        win();
+    }
+    gameOver();
 }
 int main() {
     setlocale(LC_ALL, "");
     srand(time(nullptr));
-    enemyHP = 50 + (rand() % 200);
-    enemy2HP = 50 + (rand() % 200);
     names();
     while (enemyIsAlive && enemy2IsAlive) {
-        attacksRemain();
         enemyToAttack = whoAttack();
         if (enemyToAttack == 1) {
-            whichAttackUse();
-            cin >> attack;
-            enemyHP = toAttackEnemy();
-            enemyIsAlive = isEnemyAlive();
+            toAttackEnemies(enemyHP, enemyName);
+            isAlive(enemyHP, enemyName, enemyIsAlive);
             if (enemyIsAlive) {
-                heroHP = attackEnemy();
-                heroIsAlive = isHeroAlive();
-                if (!heroIsAlive) {
-                    exit(0);
-                }
-                if (heroIsAlive) {
-                    heroHP = attackEnemy2();
-                    heroIsAlive = isHeroAlive();
-                    if (!heroIsAlive) {
-                        exit(0);
-                    }
-                }
+                attackEnemies(heroHP, enemyName);
+                isAlive(heroHP, heroName, heroIsAlive);
+                gameOver();
+            }
+            if (heroIsAlive) {
+               attackEnemies(heroHP, enemy2Name);
+               isAlive(heroHP, heroName, heroIsAlive);
+               gameOver();
             }
         }
         if (enemyToAttack == 2) {
-            whichAttackUse();
-            cin >> attack;
-            enemy2HP = toAttackEnemy2();
-            enemy2IsAlive = isEnemy2Alive();
+            toAttackEnemies(enemy2HP,enemy2Name);
+            isAlive(enemy2HP, enemy2Name, enemy2IsAlive);
             if (enemy2IsAlive) {
-                heroHP = attackEnemy2();
-                heroIsAlive = isHeroAlive();
-                if (!heroIsAlive) {
-                    exit(0);
-                }
-                if (heroIsAlive) {
-                    heroHP = attackEnemy();
-                    heroIsAlive = isHeroAlive();
-                    if (!heroIsAlive) {
-                        exit(0);
-                    }
-                }
+                attackEnemies(heroHP, enemy2Name);
+                isAlive(heroHP, heroName, heroIsAlive);
+                gameOver();
+            }
+            if (heroIsAlive) {
+               attackEnemies(heroHP, enemyName);
+               isAlive(heroHP, heroName, heroIsAlive);
+               gameOver();
             }
         }
     }
     while (enemyIsAlive && !enemy2IsAlive) {
-        attacksRemain();
-        whichAttackUse();
-        cin >> attack;
-        enemyHP = toAttackEnemy();
-        enemyIsAlive = isEnemyAlive();
-        if (enemyIsAlive) {
-            heroHP = attackEnemy();
-            heroIsAlive = isHeroAlive();
-            if (!heroIsAlive) {
-                exit(0);
-            }
-        }
-        else {
-            win();
-        }
+        oneEnemy(heroHP, enemyHP, heroName, enemyName, heroIsAlive, enemyIsAlive);
     }
     while (!enemyIsAlive && enemy2IsAlive) {
-        attacksRemain();
-        whichAttackUse();
-        cin >> attack;
-        enemy2HP = toAttackEnemy2();
-        enemy2IsAlive = isEnemy2Alive();
-        if (enemy2IsAlive) {
-            heroHP = attackEnemy2();
-            heroIsAlive = isHeroAlive();
-            if (!heroIsAlive) {
-                exit(0);
-            }
-        }
-        else {
-            win();
-        }
+        oneEnemy(heroHP, enemy2HP, heroName, enemy2Name, heroIsAlive, enemy2IsAlive);
     }
 }
