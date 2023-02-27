@@ -121,7 +121,7 @@ int cardDeal(int& value, string& dealCards, string name) {
 	return value;
 }
 int main() {
-	//intro();
+	intro();
 	chips(money);
 	do {
 		reset(playerCards, croupierCards, playerCardsValue, croupierCardsValue);
