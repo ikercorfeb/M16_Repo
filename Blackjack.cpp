@@ -38,53 +38,19 @@ void intro() {
 void chips(int& m) {
 	cout << "How many chips you have to play with?\n";
 	cin >> m;
-	Sleep(1000);
+	Sleep(500);
 	cout << "You will play with " << m << " chips!\n";
 }
 void betting(int& b, int& m) {
 	cout << "How much your bet will be?\n";
 	cin >> b;
+	if (b > m)	{
+		cout << "You don't have enough money :(\n";
+		betting(b, m);
+	}
 	m = m - b;
-	Sleep(1000);
+	Sleep(500);
 	cout << "You're bet is " << b << " chips!\n";
-}
-void another(int m) {
-	int answ;
-	if (m <= 0) {
-		cout << "You have no more chips to play :(\n";
-		play = false;
-	}
-	else {
-		cout << "Do you want to play another game? (1)yes (2)no";
-		cin >> answ;
-		if (answ == 2) {
-			Sleep(1000);
-			cout << "You stop playing Blackjack\n";
-			Sleep(1000);
-			cout << "Your total chips are " << m << "!\n";
-			play = false;
-		}
-	}
-}
-void win(int& m, int b) {
-	cout << "You win " << (b * 2) << " chips :)\n";
-	m = m + b * 2;
-	Sleep(1000);
-	cout << "You have " << m << " chips in total!\n";
-	another(m);
-}
-void lose(int& b, int& m) {
-	cout << "You lose " << b << " chips :(\n";
-	b = 0;
-	Sleep(1000);
-	cout << "You have " << m << " chips in total!\n";
-	another(m);
-}
-void reset(string& playerCards, string& croupierCards, int& playerCardsValue, int& croupierCardsValue) {
-	playerCards.clear();
-	croupierCards.clear();
-	playerCardsValue = 0;
-	croupierCardsValue = 0;
 }
 int cardDeal(int& value, string& dealCards, string name) {
 	bool initialized = false;
@@ -120,6 +86,51 @@ int cardDeal(int& value, string& dealCards, string name) {
 	cout << " of " << cards[1][rt] << ".\n";
 	return value;
 }
+void another(int m) {
+	int answ;
+	if (m <= 0) {
+		cout << "You have no more chips to play :(\n";
+		play = false;
+	}
+	else {
+		cout << "Do you want to play another game? (1)yes (2)no";
+		cin >> answ;
+		if (answ == 2) {
+			Sleep(500);
+			cout << "You stop playing Blackjack\n";
+			Sleep(500);
+			cout << "Your total chips are " << m << "!\n";
+			play = false;
+		}
+	}
+}
+void win(int& m, int b) {
+	cout << "You win " << (b * 2) << " chips :)\n";
+	m = m + b * 2;
+	Sleep(500);
+	cout << "You have " << m << " chips in total!\n";
+	another(m);
+}
+void lose(int& b, int& m) {
+	cout << "You lose " << b << " chips :(\n";
+	b = 0;
+	Sleep(500);
+	cout << "You have " << m << " chips in total!\n";
+	another(m);
+}
+void draw(int& b, int& m) {
+	cout << "You win " << b << " chips :(\n";
+	b = 0;
+	Sleep(500);
+	cout << "You have " << m << " chips in total!\n";
+	another(m);
+}
+void reset(string& playerCards, string& croupierCards, int& playerCardsValue, int& croupierCardsValue) {
+	playerCards.clear();
+	croupierCards.clear();
+	playerCardsValue = 0;
+	croupierCardsValue = 0;
+}
 int main() {
 	intro();
 	chips(money);
@@ -127,21 +138,21 @@ int main() {
 		reset(playerCards, croupierCards, playerCardsValue, croupierCardsValue);
 		betting(bet, money);
 		cout << "The croupier starts dealing the cards...\n";
-		Sleep(1000);
+		Sleep(500);
 		playerCardsValue = cardDeal(playerCardsValue, playerCards, player);
-		Sleep(1000);
+		Sleep(500);
 		croupierCardsValue = cardDeal(croupierCardsValue, croupierCards, croupier);
-		Sleep(1000);
+		Sleep(500);
 		playerCardsValue = cardDeal(playerCardsValue, playerCards, player);
-		Sleep(1000);
+		Sleep(500);
 		cout << "You're cards are :" << playerCards << ".\n";
-		Sleep(1000);
+		Sleep(500);
 		cout << "Your cards value is " << playerCardsValue << ".\n";
-		Sleep(1000);
+		Sleep(500);
 		cout << "Croupier cards are :" << croupierCards << ".\n";
-		Sleep(1000);
+		Sleep(500);
 		cout << "Croupier cards value is " << croupierCardsValue << ".\n";
-		Sleep(1000);
+		Sleep(500);
 		if (playerCardsValue == 21) {
 			win(money, bet);
 		}
@@ -149,17 +160,17 @@ int main() {
 			int mc = 0;
 			while (mc != 2) {
 				cout << "Actual Value : " << playerCardsValue << "!\n";
-				Sleep(1000);
+				Sleep(500);
 				cout << "Do you want another card? (1)yes (2)no\n";
-				Sleep(1000);
+				Sleep(500);
 				cin >> mc;
 				if (mc == 1) {
 					playerCardsValue = cardDeal(playerCardsValue, playerCards, player);
-					Sleep(1000);
+					Sleep(500);
 					cout << "You're cards are :" << playerCards << ".\n";
-					Sleep(1000);
+					Sleep(500);
 					cout << "Your cards value is " << playerCardsValue << ".\n";
-					Sleep(1000);
+					Sleep(500);
 					if (playerCardsValue == 21) {
 						win(money, bet);
 					}
@@ -170,11 +181,11 @@ int main() {
 			}
 			while (croupierCardsValue < 17) {
 				croupierCardsValue = cardDeal(croupierCardsValue, croupierCards, croupier);
-				Sleep(1000);
+				Sleep(500);
 				cout << "Croupier cards are :" << croupierCards << ".\n";
-				Sleep(1000);
+				Sleep(500);
 				cout << "Croupier cards value is " << croupierCardsValue << ".\n";
-				Sleep(1000);
+				Sleep(500);
 				if (croupierCardsValue == 21) {
 					lose(bet, money);
 				}
@@ -190,7 +201,7 @@ int main() {
 					win(money, bet);
 				}
 				else {
-					lose(bet, money);
+					draw(bet, money);
 				}
 			}
 		}
