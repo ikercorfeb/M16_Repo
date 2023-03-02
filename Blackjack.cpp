@@ -7,11 +7,11 @@
 #include <windows.h>
 using namespace std;
 int money, bet, mc, num, type, playerCardsValue, croupierCardsValue = 0;
-string cards[2][14] = {
-	{"1","2","3","4","5","6","7","8","9","10","J","Q","K","A"},
+string cards[2][13] = {
+	{"2","3","4","5","6","7","8","9","10","J","Q","K","A"},
 	{"diamons","hearts","spades","clubs"}
 };
-bool verify[2][14] = { false };
+bool verify[2][13] = { false };
 string playerCards, croupierCards;
 string player = "player";
 string croupier = "croupier";
@@ -44,7 +44,7 @@ void chips(int& m) {
 void betting(int& b, int& m) {
 	cout << "How much your bet will be?\n";
 	cin >> b;
-	if (b > m)	{
+	if (b > m) {
 		cout << "You don't have enough money :(\n";
 		betting(b, m);
 	}
@@ -66,21 +66,21 @@ int cardDeal(int& value, string& dealCards, string name) {
 	verify[rt][rn] = true;
 	cout << "The croupier deal to " << name << " a " << cards[0][rn];
 	if (cards[0][rn] == "J" || cards[0][rn] == "Q" || cards[0][rn] == "K") {
-		value = value + 10;
+		value += 10;
 	}
 	else if (cards[0][rn] == "A") {
 		int ace;
-		cout << "Do you want this Ace to be a (1) or an (11)?\n";
+		cout << "\n Do you want this Ace to be a (1) or an (11)?\n";
 		cin >> ace;
 		if (ace == 1) {
-			value = value + 1;
+			value += 1;
 		}
 		else if (ace == 11) {
-			value = value + 11;
+			value += 11;
 		}
 	}
 	else {
-		value = value + (rn + 1);
+		value += (rn+2);
 	}
 	dealCards = dealCards + " " + cards[0][rn] + " of " + cards[1][rt] + ".";
 	cout << " of " << cards[1][rt] << ".\n";
@@ -144,6 +144,8 @@ int main() {
 		croupierCardsValue = cardDeal(croupierCardsValue, croupierCards, croupier);
 		Sleep(500);
 		playerCardsValue = cardDeal(playerCardsValue, playerCards, player);
+		Sleep(500);
+		croupierCardsValue = cardDeal(croupierCardsValue, croupierCards, croupier);
 		Sleep(500);
 		cout << "You're cards are :" << playerCards << ".\n";
 		Sleep(500);
